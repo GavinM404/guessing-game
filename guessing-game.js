@@ -18,19 +18,6 @@ const randomInRange = (min, max) => {
     return Math.floor(Math.random() * (max - min) + min);
 }
 
-const askRepeat = () => {
-    const repeatYesOrNo = (answer) => {
-        if (!answer.toLowerCase() === 'yes'){
-            console.log('Ok! Bai!');
-            r1.close();
-            return false;
-          }
-        if (answer.toLowerCase() === 'yes') {
-          askLimit();
-        }
-      };
-    r1.question("Would you like to play again? ",repeatYesOrNo)
-}
 const askLimit = () => {
    const limitAsk = (limit) => {
     numAttempts = limit;
@@ -81,7 +68,6 @@ const checkGuess = (num) => {
 const askGuess = (guess) => {
 
     if (numAttempts === 0){
-        r1.close()
         console.log('You lose!');
         askRepeat();
     }
@@ -93,6 +79,16 @@ const askGuess = (guess) => {
  })
 };
 
+const askRepeat = () => {
+
+    r1.question("Would you like to play again? ", (answer) => {
+        if (answer.toLowerCase() === 'yes') {
+            askLimit();
+          } else {
+            r1.close()
+          }
+    })
+}
 
 
 askLimit()
