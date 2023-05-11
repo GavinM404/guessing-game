@@ -1,4 +1,5 @@
 // Importing readline
+const { clear } = require('console');
 const readline = require('readline');
 
 
@@ -29,14 +30,26 @@ const askLimit = () => {
 const askRange = () => {
 
     const firstAnswer = (num) => {
-        max = Number(num);
-        r1.question("Enter a min number: ", secondAnswer);
+        if (isNaN(num)){
+            console.log(`"${num}" is not a valid range.`);
+            r1.question("Enter a max number: ", firstAnswer)
+        } else {
+            max = Number(num);
+            r1.question("Enter a min number: ", secondAnswer);
+
+        }
 
     }
     const secondAnswer = (num) => {
-        min = Number(num);
-        secretNumer = randomInRange(min, max);
-        askGuess();
+        if (isNaN(num)){
+            console.log(`"${num}" is not a valid range.`);
+            r1.question("Enter a min number: ", secondAnswer);
+
+        } else {
+            min = Number(num);
+            secretNumer = randomInRange(min, max);
+            askGuess();
+        }
     }
     r1.question("Enter a max number: ", firstAnswer)
 
@@ -45,7 +58,10 @@ const askRange = () => {
 
 
 const checkGuess = (num) => {
-
+    if (Number(num) > max || Number(num) < min || isNaN(num)){
+        console.log(`Your input of "${num}" is invalid`);
+        return false;
+    }
     if (Number(num) > secretNumer){
         console.log("Too high.")
         numAttempts--;
@@ -83,6 +99,7 @@ const askRepeat = () => {
 
     r1.question("Would you like to play again? ", (answer) => {
         if (answer.toLowerCase() === 'yes') {
+            clear();
             askLimit();
           } else {
             r1.close()
